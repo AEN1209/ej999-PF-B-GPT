@@ -1,0 +1,37 @@
+services:
+  mysql-ia:
+    image: mysql:8.0
+    container_name: mysql-ia
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-IA}
+      MYSQL_USER: ${MYSQL_USER:-iauser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-iapass}
+      TZ: America/Argentina/Buenos_Aires
+    command:
+      - mysqld
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - type: bind
+        source: /home/aenadmin/dockers/mysql-ia/data
+        target: /var/lib/mysql
+      - type: bind
+        source: ./mysql/init
+        target: /docker-entrypoint-initdb.d
+        read_only: true
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpass}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - ia-net
+
+networks:
+  ia-net:
+    driver: bridge

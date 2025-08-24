@@ -1,0 +1,21 @@
+{
+  "name": "ia-tasks-crud",
+  "version": "1.0.0",
+  "description": "API Express CRUD de tasks con MySQL",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.3"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.4",
+    "vitest": "^1.6.1"
+  }
+}
